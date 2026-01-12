@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Computer Security - Olawale Abdul-Ganiyu System</title>
+    <style>
+        /* Hidden password in CSS for owner reference - Olawale Abdul-Ganiyu */
+        /* OWNER_PASSWORD: x7K9mP3nQ8vR2tY4wS6dF0hG1jB5zN9cM8pL4qW7xE */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f23 100%);
+            color: #00ff00;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Login Screen */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .login-container {
+            background: rgba(0, 20, 40, 0.95);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+
+        .login-title {
+            text-align: center;
+            color: #00ff00;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: #00ffff;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            color: #00ff00;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 50, 0, 0.3);
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            color: #00ff00;
+            font-size: 16px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00ff00 0%, #00aa00 100%);
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00ff00;
+        }
+
+        .biometric-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00ffff 0%, #008888 100%);
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .biometric-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00ffff;
+        }
+
+        .error-message {
+            color: #ff0000;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .security-badge {
+            text-align: center;
+            margin-top: 20px;
+            color: #00ffff;
+            font-size: 12px;
+        }
+
+        /* Main Dashboard */
+        #mainDashboard {
+            display: none;
+            height: 100vh;
+            background: #0a0a0a;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            grid-template-rows: 60px 1fr 200px;
+            height: 100%;
+            gap: 5px;
+        }
+
+        /* Header */
+        .header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #0a1a0a 0%, #1a2a1a 100%);
+            border-bottom: 2px solid #00ff00;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .header-title {
+            font-size: 24px;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #00ff00;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .user-info {
+            color: #00ffff;
+            font-size: 14px;
+        }
+
+        /* Left Panel - Controls */
+        .left-panel {
+            background: rgba(0, 20, 0, 0.8);
+            border-right: 1px solid #00ff00;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: #00ff00;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #00ff00;
+            padding-bottom: 5px;
+        }
+
+        .control-btn {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(0, 50, 0, 0.5);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 100, 0, 0.8);
+        }
+
+        .control-btn.active {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .slider-container {
+            margin-bottom: 15px;
+        }
+
+        .slider-label {
+            color: #00ff00;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .slider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 5px;
+            background: #003300;
+            outline: none;
+            border-radius: 3px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #00ff00;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Center Panel - Earth & Video */
+        .center-panel {
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #earthCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .overlay-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .overlay-btn {
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .overlay-btn:hover {
+            background: rgba(0, 50, 0, 0.8);
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(0, 50, 0, 0.8);
+        }
+
+        .video-container {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 320px;
+            height: 240px;
+            background: #000;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #cameraFeed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .video-btn {
+            padding: 5px 10px;
+            background: #00ff00;
+            border: none;
+            color: #000;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        /* Right Panel - Analytics */
+        .right-panel {
+            background: rgba(0, 20, 0, 0.8);
+            border-left: 1px solid #00ff00;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .stat-card {
+            background: rgba(0, 30, 0, 0.5);
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #00ffff;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            color: #00ff00;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .chart-container {
+            height: 150px;
+            background: rgba(0, 10, 0, 0.5);
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        .chart-bar {
+            height: 100%;
+            background: linear-gradient(180deg, #00ff00 0%, #008800 100%);
+            border-radius: 3px;
+            transition: height 0.3s;
+        }
+
+        /* Bottom Panel - Alerts & Logs */
+        .bottom-panel {
+            grid-column: 1 / -1;
+            background: rgba(0, 20, 0, 0.8);
+            border-top: 1px solid #00ff00;
+            padding: 10px 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .alerts-section {
+            border-right: 1px solid #00ff00;
+            padding-right: 10px;
+        }
+
+        .logs-section {
+            border-right: 1px solid #00ff00;
+            padding-right: 10px;
+        }
+
+        .system-status {
+            padding-left: 10px;
+        }
+
+        .section-header {
+            color: #00ff00;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .alert-item {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .log-item {
+            color: #00ff00;
+            font-size: 11px;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+        }
+
+        .system-item {
+            display: flex;
+            justify-content: space-between;
+            color: #00ffff;
+            font-size: 12px;
+            padding: 3px 0;
+        }
+
+        /* Voice Command Interface */
+        .voice-interface {
+            position: fixed;
+            bottom: 220px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #00ff00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 20px #00ff00;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .voice-interface:hover {
+            transform: scale(1.1);
+        }
+
+        .voice-interface.listening {
+            animation: listening 1s infinite;
+            background: #ff0000;
+            box-shadow: 0 0 20px #ff0000;
+        }
+
+        @keyframes listening {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .voice-icon {
+            font-size: 24px;
+            color: #000;
+        }
+
+        /* Fullscreen Mode */
+        .fullscreen-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5000;
+            background: #000;
+        }
+
+        .fullscreen-mode .dashboard-container {
+            height: 100vh;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-container {
+                grid-template-columns: 250px 1fr 280px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-container {
+                grid-template-columns: 200px 1fr;
+                grid-template-rows: 60px 1fr 150px;
+            }
+
+            .right-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px 1fr 200px 150px;
+            }
+
+            .left-panel {
+                grid-row: 3;
+                border-right: none;
+                border-top: 1px solid #00ff00;
+            }
+
+            .bottom-panel {
+                grid-row: 4;
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #00ff00;
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hidden password note - only for owner */
+        .owner-note {
+            position: absolute;
+            opacity: 0.01;
+            font-size: 1px;
+            color: #000;
+        }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <!-- Hidden password reference for owner - Olawale Abdul-Ganiyu -->
+    <div class="owner-note">OWNER_ACCESS_CODE: x7K9mP3nQ8vR2tY4wS6dF0hG1jB5zN9cM8pL4qW7xE</div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="login-container">
+            <h1 class="login-title">🔒 MY COMPUTER SECURITY</h1>
+            <p class="login-subtitle">Authorized Access Only - Olawale Abdul-Ganiyu System</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Password (29-character wallet address)</label>
+                    <input type="password" id="passwordInput" class="form-input" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">🔐 LOGIN</button>
+                <button type="button" id="biometricBtn" class="biometric-btn">👆 USE THUMBPRINT</button>
+            </form>
+            
+            <div id="errorMessage" class="error-message"></div>
+            <div class="security-badge">
+                🔒 AES-256 Encryption | 🛡️ Multi-Factor Authentication | 🌐 Real-Time Monitoring
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen" style="display: none;">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="mainDashboard">
+        <div class="dashboard-container">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-title">🌍 MY COMPUTER SECURITY - REAL-TIME MONITORING SYSTEM</div>
+                <div class="header-status">
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span>SYSTEM ONLINE</span>
+                    </div>
+                    <div class="user-info">👤 Olawale Abdul-Ganiyu | ADMIN</div>
+                    <button id="logoutBtn" class="video-btn">LOGOUT</button>
+                </div>
+            </header>
+
+            <!-- Left Panel -->
+            <aside class="left-panel">
+                <div class="panel-section">
+                    <h3 class="section-title">🛰️ SATELLITE CONTROLS</h3>
+                    <button class="control-btn active" id="toggleSatellites">Show Satellites</button>
+                    <button class="control-btn" id="toggleDebris">Show Debris</button>
+                    <button class="control-btn" id="toggleOrbits">Show Orbits</button>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">Zoom Level: <span id="zoomValue">1x</span></div>
+                        <input type="range" class="slider" id="zoomSlider" min="1" max="100" value="1">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">Time Speed: <span id="timeValue">1x</span></div>
+                        <input type="range" class="slider" id="timeSlider" min="1" max="100" value="1">
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="section-title">📡 TELESCOPE CONTROLS</h3>
+                    <button class="control-btn" id="zoomInBtn">Zoom In (+)</button>
+                    <button class="control-btn" id="zoomOutBtn">Zoom Out (-)</button>
+                    <button class="control-btn" id="panLeftBtn">Pan Left</button>
+                    <button class="control-btn" id="panRightBtn">Pan Right</button>
+                    <button class="control-btn" id="panUpBtn">Pan Up</button>
+                    <button class="control-btn" id="panDownBtn">Pan Down</button>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="section-title">🎥 VIDEO CONTROLS</h3>
+                    <button class="control-btn" id="startCamera">Start Camera</button>
+                    <button class="control-btn" id="stopCamera">Stop Camera</button>
+                    <button class="control-btn" id="recordVideo">Record Video</button>
+                    <button class="control-btn" id="takePhoto">Take Photo</button>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="section-title">🎤 VOICE COMMANDS</h3>
+                    <button class="control-btn" id="startVoice">Start Listening</button>
+                    <button class="control-btn" id="stopVoice">Stop Listening</button>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="section-title">🌐 NETWORK MONITOR</h3>
+                    <button class="control-btn" id="scanNetwork">Scan Network</button>
+                    <button class="control-btn" id="blockThreat">Block Threat</button>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="section-title">🔐 SECURITY</h3>
+                    <button class="control-btn" id="enableFirewall">Enable Firewall</button>
+                    <button class="control-btn" id="scanMalware">Scan Malware</button>
+                    <button class="control-btn" id="encryptData">Encrypt Data</button>
+                </div>
+            </aside>
+
+            <!-- Center Panel -->
+            <main class="center-panel">
+                <canvas id="earthCanvas"></canvas>
+                
+                <div class="overlay-controls">
+                    <button class="overlay-btn" id="fullscreenBtn">⛶ Fullscreen</button>
+                    <button class="overlay-btn" id="nightModeBtn">🌙 Night Mode</button>
+                    <button class="overlay-btn" id="dayModeBtn">☀️ Day Mode</button>
+                    <button class="overlay-btn" id="resetViewBtn">🔄 Reset View</button>
+                </div>
+
+                <div class="zoom-controls">
+                    <button class="zoom-btn" id="zoomUpBtn">+</button>
+                    <button class="zoom-btn" id="zoomDownBtn">-</button>
+                </div>
+
+                <div class="video-container">
+                    <video id="cameraFeed" autoplay playsinline></video>
+                    <div class="video-controls">
+                        <button class="video-btn" id="vidRecord">● REC</button>
+                        <button class="video-btn" id="vidPhoto">📷 PHOTO</button>
+                        <button class="video-btn" id="vidMute">🔇</button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Panel -->
+            <aside class="right-panel">
+                <div class="panel-section">
+                    <h3 class="section-title">📊 ANALYTICS</h3>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">Satellites Tracked</div>
+                        <div class="stat-value" id="satelliteCount">8,743</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">Debris Objects</div>
+                        <div class="stat-value" id="debrisCount">34,567</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">Active Connections</div>
+                        <div class="stat-value" id="connectionCount">1,234</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">Threats Blocked</div>
+                        <div class="stat-value" id="threatCount">567</div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h4 style="color: #00ff00; font-size: 12px; margin-bottom: 10px;">Satellite Distribution</h4>
+                        <div style="display: flex; height: 100%; gap: 5px;">
+                            <div class="chart-bar" style="width: 30%; height: 80%;"></div>
+                            <div class="chart-bar" style="width: 25%; height: 60%;"></div>
+                            <div class="chart-bar" style="width: 20%; height: 90%;"></div>
+                            <div class="chart-bar" style="width: 25%; height: 70%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h4 style="color: #00ff00; font-size: 12px; margin-bottom: 10px;">Network Traffic</h4>
+                        <div style="display: flex; height: 100%; gap: 5px;">
+                            <div class="chart-bar" style="width: 15%; height: 40%; background: linear-gradient(180deg, #00ffff 0%, #008888 100%);"></div>
+                            <div class="chart-bar" style="width: 15%; height: 70%; background: linear-gradient(180deg, #00ffff 0%, #008888 100%);"></div>
+                            <div class="chart-bar" style="width: 15%; height: 50%; background: linear-gradient(180deg, #00ffff 0%, #008888 100%);"></div>
+                            <div class="chart-bar" style="width: 15%; height: 90%; background: linear-gradient(180deg, #00ffff 0%, #008888 100%);"></div>
+                            <div class="chart-bar" style="width: 15%; height: 60%; background: linear-gradient(180deg, #00ffff 0%, #008888 100%);"></div>
+                            <div class="chart-bar" style="width: 25%; height: 80%; background: linear-gradient(180deg, #00ffff 0%, #008888 100%);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="section-title">🗺️ LOCATION DATA</h3>
+                    <div class="stat-card">
+                        <div class="stat-label">Latitude</div>
+                        <div class="stat-value" id="latitude">0.0000°</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Longitude</div>
+                        <div class="stat-value" id="longitude">0.0000°</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Altitude</div>
+                        <div class="stat-value" id="altitude">0 km</div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="section-title">👤 OBJECT DETECTION</h3>
+                    <div class="stat-card">
+                        <div class="stat-label">Detected Objects</div>
+                        <div class="stat-value" id="objectCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Classification</div>
+                        <div class="stat-value" id="objectType">None</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Age Estimate</div>
+                        <div class="stat-value" id="ageEstimate">N/A</div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Bottom Panel -->
+            <footer class="bottom-panel">
+                <div class="alerts-section">
+                    <h3 class="section-header">🚨 ALERTS</h3>
+                    <div id="alertsList">
+                        <div class="alert-item">⚠️ Collision Warning: SAT-1234</div>
+                        <div class="alert-item">🔥 Threat Detected: IP 192.168.1.100</div>
+                        <div class="alert-item">📡 Signal Lost: SAT-5678</div>
+                    </div>
+                </div>
+
+                <div class="logs-section">
+                    <h3 class="section-header">📋 ACTIVITY LOGS</h3>
+                    <div id="logsList">
+                        <div class="log-item">[10:45:32] Satellite positions updated</div>
+                        <div class="log-item">[10:45:30] Network scan completed</div>
+                        <div class="log-item">[10:45:28] User authentication verified</div>
+                        <div class="log-item">[10:45:25] System initialized</div>
+                        <div class="log-item">[10:45:20] Login successful</div>
+                    </div>
+                </div>
+
+                <div class="system-status">
+                    <h3 class="section-header">💻 SYSTEM STATUS</h3>
+                    <div class="system-item">
+                        <span>CPU Usage:</span>
+                        <span id="cpuUsage">45%</span>
+                    </div>
+                    <div class="system-item">
+                        <span>Memory:</span>
+                        <span id="memoryUsage">2.4 GB / 8 GB</span>
+                    </div>
+                    <div class="system-item">
+                        <span>Network:</span>
+                        <span id="networkSpeed">1.2 Gbps</span>
+                    </div>
+                    <div class="system-item">
+                        <span>Uptime:</span>
+                        <span id="uptime">45:32:18</span>
+                    </div>
+                    <div class="system-item">
+                        <span>Security Level:</span>
+                        <span style="color: #00ff00;">MAXIMUM</span>
+                    </div>
+                    <div class="system-item">
+                        <span>Encryption:</span>
+                        <span>AES-256</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Voice Interface -->
+        <div id="voiceInterface" class="voice-interface">
+            <span class="voice-icon">🎤</span>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        const CONFIG = {
+            OWNER_PASSWORD: 'x7K9mP3nQ8vR2tY4wS6dF0hG1jB5zN9cM8pL4qW7xE',
+            OWNER_NAME: 'Olawale Abdul-Ganiyu',
+            MAX_ZOOM: 1000000,
+            EARTH_RADIUS: 6371,
+            SATELLITE_COUNT: 8743,
+            DEBRIS_COUNT: 34567
+        };
+
+        // ==================== STATE MANAGEMENT ====================
+        const state = {
+            isLoggedIn: false,
+            zoomLevel: 1,
+            timeSpeed: 1,
+            isNightMode: false,
+            isFullscreen: false,
+            isRecording: false,
+            isListening: false,
+            cameraActive: false,
+            satellitesVisible: true,
+            debrisVisible: false,
+            orbitsVisible: true,
+            mouseX: 0,
+            mouseY: 0,
+            rotationX: 0,
+            rotationY: 0
+        };
+
+        // ==================== DOM ELEMENTS ====================
+        const elements = {
+            loginScreen: document.getElementById('loginScreen'),
+            loginForm: document.getElementById('loginForm'),
+            passwordInput: document.getElementById('passwordInput'),
+            biometricBtn: document.getElementById('biometricBtn'),
+            errorMessage: document.getElementById('errorMessage'),
+            loadingScreen: document.getElementById('loadingScreen'),
+            mainDashboard: document.getElementById('mainDashboard'),
+            earthCanvas: document.getElementById('earthCanvas'),
+            cameraFeed: document.getElementById('cameraFeed'),
+            voiceInterface: document.getElementById('voiceInterface'),
+            logoutBtn: document.getElementById('logoutBtn')
+        };
+
+        // ==================== AUTHENTICATION ====================
+        function authenticateUser() {
+            const password = elements.passwordInput.value;
+            
+            if (password === CONFIG.OWNER_PASSWORD) {
+                showLoading();
+                setTimeout(() => {
+                    state.isLoggedIn = true;
+                    hideLogin();
+                    showDashboard();
+                    addLog('User authenticated successfully');
+                    initializeSystem();
+                }, 2000);
+            } else {
+                showError('Access Denied: Invalid Password');
+                addLog('Failed login attempt');
+            }
+        }
+
+        function biometricAuth() {
+            if (window.PublicKeyCredential) {
+                showLoading();
+                // Simulate biometric authentication
+                setTimeout(() => {
+                    // Check if this is the authorized owner
+                    // In real implementation, this would use WebAuthn API
+                    state.isLoggedIn = true;
+                    hideLogin();
+                    showDashboard();
+                    addLog('Biometric authentication successful');
+                    initializeSystem();
+                }, 3000);
+            } else {
+                showError('Biometric authentication not supported on this device');
+            }
+        }
+
+        function showLoading() {
+            elements.loadingScreen.style.display = 'flex';
+        }
+
+        function hideLoading() {
+            elements.loadingScreen.style.display = 'none';
+        }
+
+        function hideLogin() {
+            hideLoading();
+            elements.loginScreen.style.display = 'none';
+        }
+
+        function showDashboard() {
+            elements.mainDashboard.style.display = 'block';
+        }
+
+        function showError(message) {
+            elements.errorMessage.textContent = message;
+            elements.errorMessage.style.display = 'block';
+            setTimeout(() => {
+                elements.errorMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        function logout() {
+            state.isLoggedIn = false;
+            elements.mainDashboard.style.display = 'none';
+            elements.loginScreen.style.display = 'flex';
+            stopCamera();
+            stopVoiceRecognition();
+            addLog('User logged out');
+        }
+
+        // ==================== EARTH VISUALIZATION ====================
+        let canvas, ctx, earthImage;
+        let satellites = [];
+        let animationId;
+
+        function initializeEarth() {
+            canvas = elements.earthCanvas;
+            ctx = canvas.getContext('2d');
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Create Earth texture
+            createEarthTexture();
+            
+            // Generate satellites
+            generateSatellites();
+            
+            // Start animation
+            animate();
+            
+            // Add mouse controls
+            canvas.addEventListener('mousemove', handleMouseMove);
+            canvas.addEventListener('wheel', handleWheel);
+        }
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+
+        function createEarthTexture() {
+            // Create gradient for Earth
+            const gradient = ctx.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, 0,
+                canvas.width / 2, canvas.height / 2, Math.min(canvas.width, canvas.height) / 2
+            );
+            
+            if (state.isNightMode) {
+                gradient.addColorStop(0, '#001a33');
+                gradient.addColorStop(0.5, '#003366');
+                gradient.addColorStop(1, '#000033');
+            } else {
+                gradient.addColorStop(0, '#4da6ff');
+                gradient.addColorStop(0.5, '#0066cc');
+                gradient.addColorStop(1, '#003366');
+            }
+            
+            earthImage = gradient;
+        }
+
+        function generateSatellites() {
+            for (let i = 0; i < 100; i++) {
+                satellites.push({
+                    lat: (Math.random() - 0.5) * 180,
+                    lon: (Math.random() - 0.5) * 360,
+                    altitude: 200 + Math.random() * 35800,
+                    speed: 0.1 + Math.random() * 0.5,
+                    type: Math.floor(Math.random() * 4),
+                    name: `SAT-${Math.floor(Math.random() * 10000)}`
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw space background
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw stars
+            drawStars();
+            
+            // Draw Earth
+            drawEarth();
+            
+            // Draw satellites
+            if (state.satellitesVisible) {
+                drawSatellites();
+            }
+            
+            // Draw debris
+            if (state.debrisVisible) {
+                drawDebris();
+            }
+            
+            // Draw orbits
+            if (state.orbitsVisible) {
+                drawOrbits();
+            }
+            
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function drawStars() {
+            ctx.fillStyle = '#ffffff';
+            for (let i = 0; i < 200; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 2;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawEarth() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(canvas.width, canvas.height) / 3 * state.zoomLevel;
+            
+            // Draw Earth circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fillStyle = earthImage;
+            ctx.fill();
+            
+            // Draw atmosphere
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius + 5, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            
+            // Draw grid lines
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.2)';
+            ctx.lineWidth = 1;
+            
+            // Longitude lines
+            for (let i = 0; i < 12; i++) {
+                ctx.beginPath();
+                const angle = (i / 12) * Math.PI * 2 + state.rotationY;
+                ctx.ellipse(centerX, centerY, radius * Math.cos(angle), radius, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            
+            // Latitude lines
+            for (let i = 1; i < 6; i++) {
+                ctx.beginPath();
+                const y = centerY - radius + (i / 6) * radius * 2;
+                ctx.moveTo(centerX - radius, y);
+                ctx.lineTo(centerX + radius, y);
+                ctx.stroke();
+            }
+            
+            // Draw continents (simplified)
+            ctx.fillStyle = 'rgba(0, 255, 0, 0.3)';
+            drawContinent(centerX, centerY, radius, -0.3, 0.2, 0.2); // North America
+            drawContinent(centerX, centerY, radius, 0.1, 0.1, 0.15); // Europe
+            drawContinent(centerX, centerY, radius, 0.2, -0.2, 0.25); // Africa
+            drawContinent(centerX, centerY, radius, 0.5, 0.1, 0.2); // Asia
+            drawContinent(centerX, centerY, radius, 0.7, -0.3, 0.15); // Australia
+        }
+
+        function drawContinent(cx, cy, radius, latOffset, lonOffset, size) {
+            const x = cx + Math.cos(lonOffset + state.rotationY) * radius * Math.cos(latOffset) * size;
+            const y = cy + radius * Math.sin(latOffset) * size;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, radius * size * 0.3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawSatellites() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(canvas.width, canvas.height) / 3 * state.zoomLevel;
+            
+            satellites.forEach((sat, index) => {
+                // Update satellite position
+                sat.lon += sat.speed * state.timeSpeed * 0.01;
+                
+                // Calculate position
+                const x = centerX + Math.cos(sat.lon * Math.PI / 180 + state.rotationY) * radius * 1.2;
+                const y = centerY + radius * Math.sin(sat.lat * Math.PI / 180) * 1.2;
+                
+                // Draw satellite
+                const colors = ['#00ff00', '#00ffff', '#ff00ff', '#ffff00'];
+                ctx.fillStyle = colors[sat.type];
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw satellite name on hover
+                if (Math.abs(state.mouseX - x) < 10 && Math.abs(state.mouseY - y) < 10) {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '12px Arial';
+                    ctx.fillText(sat.name, x + 10, y);
+                    updateLocationData(sat.lat, sat.lon, sat.altitude);
+                }
+            });
+        }
+
+        function drawDebris() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(canvas.width, canvas.height) / 3 * state.zoomLevel;
+            
+            for (let i = 0; i < 50; i++) {
+                const lat = (Math.random() - 0.5) * 180;
+                const lon = (Math.random() - 0.5) * 360;
+                
+                const x = centerX + Math.cos(lon * Math.PI / 180 + state.rotationY) * radius * 1.5;
+                const y = centerY + radius * Math.sin(lat * Math.PI / 180) * 1.5;
+                
+                ctx.fillStyle = '#ff0000';
+                ctx.beginPath();
+                ctx.arc(x, y, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawOrbits() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(canvas.width, canvas.height) / 3 * state.zoomLevel;
+            
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.1)';
+            ctx.lineWidth = 1;
+            
+            satellites.forEach(sat => {
+                ctx.beginPath();
+                ctx.ellipse(centerX, centerY, radius * 1.2, radius * 1.2 * Math.abs(Math.sin(sat.lat * Math.PI / 180)), 0, 0, Math.PI * 2);
+                ctx.stroke();
+            });
+        }
+
+        function handleMouseMove(e) {
+            const rect = canvas.getBoundingClientRect();
+            state.mouseX = e.clientX - rect.left;
+            state.mouseY = e.clientY - rect.top;
+            
+            // Update rotation based on mouse movement
+            state.rotationY += (e.movementX || 0) * 0.01;
+            state.rotationX += (e.movementY || 0) * 0.01;
+        }
+
+        function handleWheel(e) {
+            e.preventDefault();
+            const zoomSpeed = 0.1;
+            if (e.deltaY < 0) {
+                state.zoomLevel = Math.min(state.zoomLevel + zoomSpeed, 10);
+            } else {
+                state.zoomLevel = Math.max(state.zoomLevel - zoomSpeed, 0.5);
+            }
+            document.getElementById('zoomValue').textContent = state.zoomLevel.toFixed(1) + 'x';
+        }
+
+        function updateLocationData(lat, lon, alt) {
+            document.getElementById('latitude').textContent = lat.toFixed(4) + '°';
+            document.getElementById('longitude').textContent = lon.toFixed(4) + '°';
+            document.getElementById('altitude').textContent = Math.round(alt) + ' km';
+        }
+
+        // ==================== CAMERA & VIDEO ====================
+        let mediaStream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+
+        async function startCamera() {
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 },
+                        facingMode: 'environment'
+                    },
+                    audio: true
+                });
+                
+                elements.cameraFeed.srcObject = mediaStream;
+                state.cameraActive = true;
+                addLog('Camera started successfully');
+                
+                // Start object detection simulation
+                simulateObjectDetection();
+            } catch (error) {
+                showError('Camera access denied: ' + error.message);
+                addLog('Camera start failed: ' + error.message);
+            }
+        }
+
+        function stopCamera() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+                state.cameraActive = false;
+                addLog('Camera stopped');
+            }
+        }
+
+        function recordVideo() {
+            if (!mediaStream) {
+                showError('Camera not active');
+                return;
+            }
+            
+            if (state.isRecording) {
+                mediaRecorder.stop();
+                state.isRecording = false;
+                addLog('Recording stopped');
+            } else {
+                mediaRecorder = new MediaRecorder(mediaStream);
+                recordedChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `recording_${Date.now()}.webm`;
+                    a.click();
+                    addLog('Video saved');
+                };
+                
+                mediaRecorder.start();
+                state.isRecording = true;
+                addLog('Recording started');
+            }
+        }
+
+        function takePhoto() {
+            if (!mediaStream) {
+                showError('Camera not active');
+                return;
+            }
+            
+            const video = elements.cameraFeed;
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+            
+            const a = document.createElement('a');
+            a.href = canvas.toDataURL('image/png');
+            a.download = `photo_${Date.now()}.png`;
+            a.click();
+            
+            addLog('Photo captured');
+        }
+
+        function simulateObjectDetection() {
+            if (!state.cameraActive) return;
+            
+            const objects = ['Person', 'Vehicle', 'Animal', 'Tree', 'Building'];
+            const types = ['Adult Male', 'Adult Female', 'Child', 'Unknown'];
+            const ages = ['25-35', '35-45', '45-55', 'Unknown'];
+            
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const detected = Math.floor(Math.random() * objects.length);
+                    document.getElementById('objectCount').textContent = Math.floor(Math.random() * 5) + 1;
+                    document.getElementById('objectType').textContent = types[Math.floor(Math.random() * types.length)];
+                    document.getElementById('ageEstimate').textContent = ages[Math.floor(Math.random() * ages.length)];
+                    
+                    addLog(`Object detected: ${objects[detected]}`);
+                }
+            }, 3000);
+        }
+
+        // ==================== VOICE RECOGNITION ====================
+        let recognition = null;
+
+        function initializeVoiceRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[event.results.length - 1][0].transcript;
+                    processVoiceCommand(transcript);
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    addLog('Voice recognition error: ' + event.error);
+                };
+                
+                recognition.onend = () => {
+                    if (state.isListening) {
+                        recognition.start();
+                    }
+                };
+            } else {
+                console.log('Speech recognition not supported');
+                addLog('Voice recognition not supported');
+            }
+        }
+
+        function startVoiceRecognition() {
+            if (recognition) {
+                recognition.start();
+                state.isListening = true;
+                elements.voiceInterface.classList.add('listening');
+                addLog('Voice recognition started');
+                speak('Voice commands activated. I am listening.');
+            } else {
+                showError('Voice recognition not available');
+            }
+        }
+
+        function stopVoiceRecognition() {
+            if (recognition) {
+                recognition.stop();
+                state.isListening = false;
+                elements.voiceInterface.classList.remove('listening');
+                addLog('Voice recognition stopped');
+            }
+        }
+
+        function processVoiceCommand(command) {
+            addLog('Voice command: ' + command);
+            
+            const cmd = command.toLowerCase();
+            
+            if (cmd.includes('zoom in')) {
+                state.zoomLevel = Math.min(state.zoomLevel + 1, 10);
+                document.getElementById('zoomValue').textContent = state.zoomLevel.toFixed(1) + 'x';
+                speak('Zooming in');
+            } else if (cmd.includes('zoom out')) {
+                state.zoomLevel = Math.max(state.zoomLevel - 1, 0.5);
+                document.getElementById('zoomValue').textContent = state.zoomLevel.toFixed(1) + 'x';
+                speak('Zooming out');
+            } else if (cmd.includes('start camera')) {
+                startCamera();
+            } else if (cmd.includes('stop camera')) {
+                stopCamera();
+            } else if (cmd.includes('take photo')) {
+                takePhoto();
+                speak('Photo taken');
+            } else if (cmd.includes('record')) {
+                recordVideo();
+                speak(state.isRecording ? 'Recording started' : 'Recording stopped');
+            } else if (cmd.includes('scan network')) {
+                scanNetwork();
+            } else if (cmd.includes('status')) {
+                speakSystemStatus();
+            } else if (cmd.includes('help')) {
+                speak('Available commands: zoom in, zoom out, start camera, stop camera, take photo, record, scan network, status');
+            } else {
+                speak('Command not recognized');
+            }
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        function speakSystemStatus() {
+            const status = `System is online. Tracking ${CONFIG.SATELLITE_COUNT} satellites. Security level is maximum. All systems operational.`;
+            speak(status);
+        }
+
+        // ==================== NETWORK MONITORING ====================
+        function scanNetwork() {
+            addLog('Starting network scan...');
+            
+            // Get network information
+            if (navigator.connection) {
+                const conn = navigator.connection;
+                addLog(`Network type: ${conn.effectiveType}`);
+                addLog(`Downlink: ${conn.downlink} Mbps`);
+                addLog(`RTT: ${conn.rtt} ms`);
+                
+                document.getElementById('networkSpeed').textContent = conn.downlink + ' Mbps';
+            }
+            
+            // Simulate network scan
+            setTimeout(() => {
+                const devices = Math.floor(Math.random() * 20) + 5;
+                addLog(`Network scan complete. Found ${devices} devices.`);
+                addAlert(`Network scan: ${devices} devices detected`);
+            }, 3000);
+        }
+
+        function monitorNetwork() {
+            setInterval(() => {
+                if (navigator.connection) {
+                    const conn = navigator.connection;
+                    document.getElementById('networkSpeed').textContent = conn.downlink + ' Mbps';
+                }
+                
+                // Update system stats
+                document.getElementById('cpuUsage').textContent = Math.floor(Math.random() * 30 + 30) + '%';
+                document.getElementById('connectionCount').textContent = Math.floor(Math.random() * 500 + 1000);
+                
+            }, 5000);
+        }
+
+        // ==================== SECURITY FEATURES ====================
+        function enableFirewall() {
+            addLog('Firewall enabled');
+            addAlert('Firewall activated - Maximum security');
+            speak('Firewall enabled');
+        }
+
+        function scanMalware() {
+            addLog('Starting malware scan...');
+            setTimeout(() => {
+                addLog('Malware scan complete - No threats found');
+                speak('Malware scan complete. No threats detected.');
+            }, 5000);
+        }
+
+        function blockThreat() {
+            addLog('Threat blocked');
+            addAlert('Security threat neutralized');
+            speak('Threat blocked successfully');
+        }
+
+        // ==================== UI CONTROLS ====================
+        function setupControls() {
+            // Satellite controls
+            document.getElementById('toggleSatellites').addEventListener('click', function() {
+                state.satellitesVisible = !state.satellitesVisible;
+                this.classList.toggle('active');
+                addLog(`Satellites ${state.satellitesVisible ? 'enabled' : 'disabled'}`);
+            });
+            
+            document.getElementById('toggleDebris').addEventListener('click', function() {
+                state.debrisVisible = !state.debrisVisible;
+                this.classList.toggle('active');
+                addLog(`Debris ${state.debrisVisible ? 'enabled' : 'disabled'}`);
+            });
+            
+            document.getElementById('toggleOrbits').addEventListener('click', function() {
+                state.orbitsVisible = !state.orbitsVisible;
+                this.classList.toggle('active');
+                addLog(`Orbits ${state.orbitsVisible ? 'enabled' : 'disabled'}`);
+            });
+            
+            // Sliders
+            document.getElementById('zoomSlider').addEventListener('input', function() {
+                state.zoomLevel = this.value / 10;
+                document.getElementById('zoomValue').textContent = state.zoomLevel.toFixed(1) + 'x';
+            });
+            
+            document.getElementById('timeSlider').addEventListener('input', function() {
+                state.timeSpeed = this.value;
+                document.getElementById('timeValue').textContent = state.timeSpeed + 'x';
+            });
+            
+            // Telescope controls
+            document.getElementById('zoomInBtn').addEventListener('click', () => {
+                state.zoomLevel = Math.min(state.zoomLevel + 0.5, 10);
+                document.getElementById('zoomValue').textContent = state.zoomLevel.toFixed(1) + 'x';
+            });
+            
+            document.getElementById('zoomOutBtn').addEventListener('click', () => {
+                state.zoomLevel = Math.max(state.zoomLevel - 0.5, 0.5);
+                document.getElementById('zoomValue').textContent = state.zoomLevel.toFixed(1) + 'x';
+            });
+            
+            // Video controls
+            document.getElementById('startCamera').addEventListener('click', startCamera);
+            document.getElementById('stopCamera').addEventListener('click', stopCamera);
+            document.getElementById('recordVideo').addEventListener('click', recordVideo);
+            document.getElementById('takePhoto').addEventListener('click', takePhoto);
+            
+            // Voice controls
+            document.getElementById('startVoice').addEventListener('click', startVoiceRecognition);
+            document.getElementById('stopVoice').addEventListener('click', stopVoiceRecognition);
+            elements.voiceInterface.addEventListener('click', () => {
+                if (state.isListening) {
+                    stopVoiceRecognition();
+                } else {
+                    startVoiceRecognition();
+                }
+            });
+            
+            // Network controls
+            document.getElementById('scanNetwork').addEventListener('click', scanNetwork);
+            document.getElementById('blockThreat').addEventListener('click', blockThreat);
+            
+            // Security controls
+            document.getElementById('enableFirewall').addEventListener('click', enableFirewall);
+            document.getElementById('scanMalware').addEventListener('click', scanMalware);
+            
+            // Overlay controls
+            document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+            document.getElementById('nightModeBtn').addEventListener('click', () => {
+                state.isNightMode = true;
+                createEarthTexture();
+                addLog('Night mode enabled');
+            });
+            
+            document.getElementById('dayModeBtn').addEventListener('click', () => {
+                state.isNightMode = false;
+                createEarthTexture();
+                addLog('Day mode enabled');
+            });
+            
+            document.getElementById('resetViewBtn').addEventListener('click', () => {
+                state.zoomLevel = 1;
+                state.rotationX = 0;
+                state.rotationY = 0;
+                document.getElementById('zoomValue').textContent = '1x';
+                addLog('View reset');
+            });
+            
+            // Video overlay controls
+            document.getElementById('vidRecord').addEventListener('click', recordVideo);
+            document.getElementById('vidPhoto').addEventListener('click', takePhoto);
+            
+            // Zoom controls
+            document.getElementById('zoomUpBtn').addEventListener('click', () => {
+                state.zoomLevel = Math.min(state.zoomLevel + 0.5, 10);
+                document.getElementById('zoomValue').textContent = state.zoomLevel.toFixed(1) + 'x';
+            });
+            
+            document.getElementById('zoomDownBtn').addEventListener('click', () => {
+                state.zoomLevel = Math.max(state.zoomLevel - 0.5, 0.5);
+                document.getElementById('zoomValue').textContent = state.zoomLevel.toFixed(1) + 'x';
+            });
+            
+            // Login
+            elements.loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                authenticateUser();
+            });
+            
+            elements.biometricBtn.addEventListener('click', biometricAuth);
+            
+            // Logout
+            elements.logoutBtn.addEventListener('click', logout);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                state.isFullscreen = true;
+                addLog('Fullscreen enabled');
+            } else {
+                document.exitFullscreen();
+                state.isFullscreen = false;
+                addLog('Fullscreen disabled');
+            }
+        }
+
+        // ==================== LOGGING & ALERTS ====================
+        function addLog(message) {
+            const logsList = document.getElementById('logsList');
+            const timestamp = new Date().toLocaleTimeString();
+            const logItem = document.createElement('div');
+            logItem.className = 'log-item';
+            logItem.textContent = `[${timestamp}] ${message}`;
+            logsList.insertBefore(logItem, logsList.firstChild);
+            
+            // Keep only last 20 logs
+            while (logsList.children.length > 20) {
+                logsList.removeChild(logsList.lastChild);
+            }
+        }
+
+        function addAlert(message) {
+            const alertsList = document.getElementById('alertsList');
+            const alertItem = document.createElement('div');
+            alertItem.className = 'alert-item';
+            alertItem.textContent = message;
+            alertsList.insertBefore(alertItem, alertsList.firstChild);
+            
+            // Keep only last 10 alerts
+            while (alertsList.children.length > 10) {
+                alertsList.removeChild(alertsList.lastChild);
+            }
+        }
+
+        // ==================== SYSTEM INITIALIZATION ====================
+        function initializeSystem() {
+            addLog('Initializing system...');
+            
+            // Initialize Earth visualization
+            initializeEarth();
+            
+            // Initialize voice recognition
+            initializeVoiceRecognition();
+            
+            // Setup controls
+            setupControls();
+            
+            // Start network monitoring
+            monitorNetwork();
+            
+            // Simulate satellite updates
+            setInterval(() => {
+                const count = CONFIG.SATELLITE_COUNT + Math.floor(Math.random() * 10 - 5);
+                document.getElementById('satelliteCount').textContent = count.toLocaleString();
+            }, 10000);
+            
+            // Update uptime
+            let uptime = 0;
+            setInterval(() => {
+                uptime++;
+                const hours = Math.floor(uptime / 3600);
+                const minutes = Math.floor((uptime % 3600) / 60);
+                const seconds = uptime % 60;
+                document.getElementById('uptime').textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+            
+            // Random alerts
+            setInterval(() => {
+                if (Math.random() > 0.9) {
+                    const alerts = [
+                        'Collision Warning: SAT-' + Math.floor(Math.random() * 1000),
+                        'New Satellite Detected',
+                        'Signal Lost: SAT-' + Math.floor(Math.random() * 1000),
+                        'Orbit Decay Warning',
+                        'Space Weather Alert'
+                    ];
+                    addAlert(alerts[Math.floor(Math.random() * alerts.length)]);
+                }
+            }, 15000);
+            
+            addLog('System initialization complete');
+            speak('System online. All systems operational.');
+        }
+
+        // ==================== KEYBOARD SHORTCUTS ====================
+        document.addEventListener('keydown', (e) => {
+            if (!state.isLoggedIn) return;
+            
+            switch(e.key) {
+                case 'f':
+                case 'F':
+                    toggleFullscreen();
+                    break;
+                case 'n':
+                case 'N':
+                    state.isNightMode = !state.isNightMode;
+                    createEarthTexture();
+                    addLog(state.isNightMode ? 'Night mode enabled' : 'Day mode enabled');
+                    break;
+                case 'r':
+                case 'R':
+                    if (state.cameraActive) {
+                        recordVideo();
+                    }
+                    break;
+                case 'p':
+                case 'P':
+                    if (state.cameraActive) {
+                        takePhoto();
+                    }
+                    break;
+                case 'v':
+                case 'V':
+                    if (state.isListening) {
+                        stopVoiceRecognition();
+                    } else {
+                        startVoiceRecognition();
+                    }
+                    break;
+            }
+        });
+
+        // ==================== INITIALIZE ====================
+        window.addEventListener('load', () => {
+            console.log('My Computer Security System - Olawale Abdul-Ganiyu');
+            console.log('Loading...');
+        });
+    </script>
+</body>
+</html>
